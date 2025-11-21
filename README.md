@@ -136,9 +136,9 @@ lt.compact(); // physically removes dead entries
 
 ## When Not to Use LeapTable
 
-- Keys arrive out of order.
-- You require arbitrary insertions into the middle.
-- You frequently modify existing values.
+- Keys arrive out of order
+- You require arbitrary insertions into the middle
+- You frequently modify existing values
 - You delete extremely often without compacting
 
 For these workloads, a TreeMap or skip-list may be a better fit.
