@@ -1,0 +1,69 @@
+############################
+# Eclipse-specific files
+############################
+.project
+.classpath
+.settings/
+.loadpath
+.recommenders/
+
+# Eclipse Core / Workspace metadata
+# (never commit workspace-level junk)
+.metadata/
+bin/                      # Eclipse default build dir
+tmp/
+*.tmp
+*.bak
+*.swp
+
+############################
+# Java build outputs
+############################
+target/                   # Maven
+out/                      # Gradle or general
+build/                    # General build folder
+dist/
+*.class
+
+############################
+# Maven
+############################
+.mvn/wrapper/maven-wrapper.jar
+!/.mvn/wrapper/maven-wrapper.properties
+!/.mvn/wrapper/MavenWrapperDownloader.java
+
+############################
+# Gradle
+############################
+.gradle/
+**/build/
+!gradle/wrapper/gradle-wrapper.jar
+
+############################
+# IDE / editor files
+############################
+# VS Code
+.vscode/
+.factorypath
+
+# IntelliJ (just in case you open it there)
+.idea/
+*.iml
+*.ipr
+*.iws
+
+############################
+# OS files
+############################
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Linux
+*~
