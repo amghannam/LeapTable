@@ -35,13 +35,13 @@ It is essentially a **cache-friendly skip-list alternative** for append-only ord
 
 ## How It Works
 
-The LeapTable is designed for **fast read access** and efficient handling of deletes by utilizing an immutable base array, logical deletion markers, and a layered indexing structure.
+LeapTable is designed for **fast read access** and efficient handling of deletes by utilizing an immutable base array, logical deletion markers, and a layered indexing structure.
 
 ---
 
 ### 1. Contiguous Base Array
 
-All data entries are stored in a single, **sorted, contiguous array** (like a `java.util.ArrayList`):
+All entries are stored in a single, sorted, append-only array.
 
 > `base`: $[e_0, e_1, e_2, e_3, e_4, \dots ]$
 
@@ -51,7 +51,7 @@ All data entries are stored in a single, **sorted, contiguous array** (like a `j
 
 ### 2. Tombstones (Logical Deletes)
 
-Instead of physically removing entries and incurring expensive memory shifting, the LeapTable uses a separate structure to mark entries for logical deletion:
+Instead of physically removing entries and incurring expensive memory shifting, LeapTable uses a separate structure to mark entries for logical deletion:
 
 | Base Array (Key, Value) | Tombstone Array (Flag) |
 | :---: | :---: |
@@ -62,13 +62,13 @@ Instead of physically removing entries and incurring expensive memory shifting, 
 
 * **Mechanism:** A `1` in the tombstone array marks an entry as deleted.
 * **Read Access:** **Tombstoned entries are skipped** in all read and scan operations.
-* **Physical Removal:** Physical memory reclamation happens only during the **Compaction** phase (see section 4).
+* **Physical Removal:** Physical removal of deleted entries happens only during the **Compaction** phase (see section 4).
 
 ---
 
 ### 3. Skip-Index Levels
 
-To enable $\mathcal{O}(\log n)$ lookups without using a traditional B-tree, the LeapTable builds multiple levels of skip-indexes using **deterministic, stride-based sampling**.
+LeapTable achieves O(log n) lookups using deterministic, stride-based skip-index levels:
 
 * **Level 0:** Samples every $2^{\text{nd}}$ entry (stride 2) $\rightarrow \left[0, 2, 4, 6, \dots \right]$
 * **Level 1:** Samples every $4^{\text{th}}$ entry (stride 4) $\rightarrow \left[0, 4, 8, \dots \right]$
@@ -76,8 +76,7 @@ To enable $\mathcal{O}(\log n)$ lookups without using a traditional B-tree, the 
 * **Level $k$:** Samples every $2^{k+1}$-th entry
 
 
-
-* **Lookup Process:** Lookups start at the **highest level** and walk down, efficiently **narrowing the search window** until a small range is found for a final linear scan on the base array.
+Lookups start at the highest level and walk downward, narrowing the search window before performing a final binary search on the base array.
 
 ---
 
@@ -86,7 +85,7 @@ To enable $\mathcal{O}(\log n)$ lookups without using a traditional B-tree, the 
 Compaction is the routine maintenance process for the storage engine.
 
 * **Action 1 (Garbage Collection):** Physically removes all tombstoned (logically deleted) entries from the base array.
-* **Action 2 (Rewrite):** The base array is rewritten to a new, fully compacted, and immutable state.
+* **Action 2 (Rewrite):** The base array is rewritten into a new, fully compacted state.
 * **Action 3 (Rebuild Index):** All skip-index levels are rebuilt over the new, compacted base array.
 
 ---
