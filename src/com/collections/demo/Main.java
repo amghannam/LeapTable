@@ -55,6 +55,7 @@ public final class Main {
 		// Append new keys (still monotone)
 		lt.putAppend(11, "Value-11");
 		lt.putAppend(12, "Value-12");
+		lt.putAppend(13, "Value-13");
 
 		System.out.println("\nAfter further appends:");
 		printAll(lt);
