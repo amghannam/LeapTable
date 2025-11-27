@@ -16,7 +16,7 @@ public final class Main {
 
 		// Append entries (keys must be non-decreasing)
 		for (int i = 1; i <= 10; i++) {
-			lt.putAppend(i, "Value-" + i);
+			lt.append(i, "Value-" + i);
 		}
 
 		System.out.println("\nInitial table:");
@@ -53,9 +53,9 @@ public final class Main {
 		System.out.println("sizePhysical() = " + lt.sizePhysical());
 
 		// Append new keys (still monotone)
-		lt.putAppend(11, "Value-11");
-		lt.putAppend(12, "Value-12");
-		lt.putAppend(13, "Value-13");
+		lt.append(11, "Value-11");
+		lt.append(12, "Value-12");
+		lt.append(13, "Value-13");
 
 		System.out.println("\nAfter further appends:");
 		printAll(lt);

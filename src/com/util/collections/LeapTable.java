@@ -73,7 +73,7 @@ import java.util.function.IntUnaryOperator;
  *
  * <h2>Complexity</h2>
  * <ul>
- * <li>{@code putAppend}: amortized O(1)</li>
+ * <li>{@code append}: amortized O(1)</li>
  * <li>{@code get}, {@code floor}, {@code ceil}: O(log n)</li>
  * <li>{@code range}: O(log n + m), where m is result count</li>
  * <li>{@code compact}: O(n)</li>
@@ -205,7 +205,7 @@ public final class LeapTable<K extends Comparable<? super K>, V> implements Iter
 	 * @throws IllegalArgumentException if {@code key} would break monotone order
 	 * @throws NullPointerException     if {@code key} is {@code null}
 	 */
-	public void putAppend(K key, V value) {
+	public void append(K key, V value) {
 		Objects.requireNonNull(key, "key");
 		if (!base.isEmpty() && key.compareTo(base.get(base.size() - 1).key()) < 0) {
 			throw new IllegalArgumentException("Keys must be appended in non-decreasing order");

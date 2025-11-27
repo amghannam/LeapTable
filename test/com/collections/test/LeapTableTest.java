@@ -20,7 +20,7 @@ final class LeapTableTest {
 	void monotoneAppendAndGet() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 100; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 
 		assertEquals(100, lt.sizeLive());
@@ -41,9 +41,9 @@ final class LeapTableTest {
 	@DisplayName("Out-of-order append is rejected")
 	void outOfOrderRejected() {
 		var lt = new LeapTable<Integer, String>();
-		lt.putAppend(10, "a");
-		lt.putAppend(10, "b"); // equal is allowed (non-decreasing)
-		var ex = assertThrows(IllegalArgumentException.class, () -> lt.putAppend(9, "c"));
+		lt.append(10, "a");
+		lt.append(10, "b"); // equal is allowed (non-decreasing)
+		var ex = assertThrows(IllegalArgumentException.class, () -> lt.append(9, "c"));
 		assertTrue(
 				ex.getMessage().toLowerCase().contains("non-decreasing")
 						|| ex.getMessage().toLowerCase().contains("appended"),
@@ -58,7 +58,7 @@ final class LeapTableTest {
 		assertNull(lt.lastKey());
 
 		for (int i = 0; i < 5; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 		assertEquals(0, lt.firstKey());
 		assertEquals(4, lt.lastKey());
@@ -80,7 +80,7 @@ final class LeapTableTest {
 	void floorAndCeilWithHoles() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 10; i++) {
-			lt.putAppend(i * 2, "v" + (i * 2)); // keys: 0,2,4,...,18
+			lt.append(i * 2, "v" + (i * 2)); // keys: 0,2,4,...,18
 		}
 
 		// exact hit
@@ -118,7 +118,7 @@ final class LeapTableTest {
 	void rangeBasic() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 20; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 
 		var keys = new ArrayList<Integer>();
@@ -133,7 +133,7 @@ final class LeapTableTest {
 	void rangeWithDeletesAndEdges() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 10; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 
 		lt.remove(3);
@@ -161,7 +161,7 @@ final class LeapTableTest {
 	void deleteAndCompact() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 10; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 
 		assertEquals("v3", lt.remove(3));
@@ -195,13 +195,13 @@ final class LeapTableTest {
 	void nullKeysAndValues() {
 		var lt = new LeapTable<Integer, String>();
 
-		assertThrows(NullPointerException.class, () -> lt.putAppend(null, "x"));
+		assertThrows(NullPointerException.class, () -> lt.append(null, "x"));
 
-		lt.putAppend(1, null);
+		lt.append(1, null);
 		assertNull(lt.get(1)); // cannot distinguish from absent by value alone
 		assertTrue(lt.containsKey(1));
 
-		lt.putAppend(2, "hello");
+		lt.append(2, "hello");
 		assertEquals("hello", lt.get(2));
 	}
 
@@ -209,10 +209,10 @@ final class LeapTableTest {
 	@DisplayName("LeapTable works with String keys and lexicographic order")
 	void stringKeys() {
 		var lt = new LeapTable<String, Integer>();
-		lt.putAppend("A001", 1);
-		lt.putAppend("A002", 2);
-		lt.putAppend("A010", 10);
-		lt.putAppend("B001", 100);
+		lt.append("A001", 1);
+		lt.append("A002", 2);
+		lt.append("A010", 10);
+		lt.append("B001", 100);
 
 		assertEquals(1, lt.get("A001"));
 		assertEquals(10, lt.get("A010"));
@@ -233,7 +233,7 @@ final class LeapTableTest {
 	void iteratorOrder() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 8; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 		lt.remove(2);
 		lt.remove(5);
@@ -251,7 +251,7 @@ final class LeapTableTest {
 	void snapshots() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 5; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 		lt.remove(1);
 		lt.remove(3);
@@ -282,7 +282,7 @@ final class LeapTableTest {
 		// 1) Build structure with monotone appends
 		int n = 5_000;
 		for (int i = 0; i < n; i++) {
-			lt.putAppend(i, i * 10);
+			lt.append(i, i * 10);
 			tm.put(i, i * 10);
 		}
 
@@ -360,7 +360,7 @@ final class LeapTableTest {
 	void serializationRoundTrip() throws Exception {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 50; i++) {
-			lt.putAppend(i, "v" + i);
+			lt.append(i, "v" + i);
 		}
 		lt.remove(7);
 		lt.remove(8);
