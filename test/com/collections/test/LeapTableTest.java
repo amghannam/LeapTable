@@ -153,12 +153,12 @@ final class LeapTableTest {
 		assertTrue(keys.isEmpty(), "range with from > to should yield nothing");
 	}
 
-	/* ========================= deletes & compaction ========================= */
+	/* ========================= deletion & compaction ========================= */
 
 	@SuppressWarnings("unused")
 	@Test
-	@DisplayName("Delete creates tombstones, compact reclaims them")
-	void deleteAndCompact() {
+	@DisplayName("Remove (deletion) creates tombstones, compact reclaims them")
+	void removeAndCompact() {
 		var lt = new LeapTable<Integer, String>();
 		for (int i = 0; i < 10; i++) {
 			lt.append(i, "v" + i);
@@ -166,7 +166,7 @@ final class LeapTableTest {
 
 		assertEquals("v3", lt.remove(3));
 		assertEquals("v4", lt.remove(4));
-		assertNull(lt.remove(3)); // second delete is no-op
+		assertNull(lt.remove(3)); // second remove is a no-op
 
 		assertEquals(8, lt.sizeLive());
 		assertEquals(10, lt.sizePhysical());
