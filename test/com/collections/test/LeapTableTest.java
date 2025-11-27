@@ -63,8 +63,8 @@ final class LeapTableTest {
 		assertEquals(0, lt.firstKey());
 		assertEquals(4, lt.lastKey());
 
-		lt.delete(0);
-		lt.delete(4);
+		lt.remove(0);
+		lt.remove(4);
 		assertEquals(1, lt.firstKey());
 		assertEquals(3, lt.lastKey());
 
@@ -100,7 +100,7 @@ final class LeapTableTest {
 		assertNull(lt.ceilEntry(999));
 
 		// delete a middle key and see floor/ceil skip it
-		lt.delete(8);
+		lt.remove(8);
 		assertNull(lt.get(8));
 
 		var floor = lt.floorEntry(8);
@@ -136,9 +136,9 @@ final class LeapTableTest {
 			lt.putAppend(i, "v" + i);
 		}
 
-		lt.delete(3);
-		lt.delete(4);
-		lt.delete(7);
+		lt.remove(3);
+		lt.remove(4);
+		lt.remove(7);
 
 		var keys = new ArrayList<Integer>();
 		lt.range(0, 9, (k, v) -> keys.add(k));
@@ -164,9 +164,9 @@ final class LeapTableTest {
 			lt.putAppend(i, "v" + i);
 		}
 
-		assertEquals("v3", lt.delete(3));
-		assertEquals("v4", lt.delete(4));
-		assertNull(lt.delete(3)); // second delete is no-op
+		assertEquals("v3", lt.remove(3));
+		assertEquals("v4", lt.remove(4));
+		assertNull(lt.remove(3)); // second delete is no-op
 
 		assertEquals(8, lt.sizeLive());
 		assertEquals(10, lt.sizePhysical());
@@ -235,8 +235,8 @@ final class LeapTableTest {
 		for (int i = 0; i < 8; i++) {
 			lt.putAppend(i, "v" + i);
 		}
-		lt.delete(2);
-		lt.delete(5);
+		lt.remove(2);
+		lt.remove(5);
 
 		var iterKeys = new ArrayList<Integer>();
 		for (var e : lt) {
@@ -253,8 +253,8 @@ final class LeapTableTest {
 		for (int i = 0; i < 5; i++) {
 			lt.putAppend(i, "v" + i);
 		}
-		lt.delete(1);
-		lt.delete(3);
+		lt.remove(1);
+		lt.remove(3);
 
 		var keys = lt.keys();
 		var values = lt.valuesList();
@@ -289,7 +289,7 @@ final class LeapTableTest {
 		// 2) Randomly delete some keys
 		for (int i = 0; i < n; i++) {
 			if (rnd.nextDouble() < 0.25) {
-				lt.delete(i);
+				lt.remove(i);
 				tm.remove(i);
 			}
 		}
@@ -362,8 +362,8 @@ final class LeapTableTest {
 		for (int i = 0; i < 50; i++) {
 			lt.putAppend(i, "v" + i);
 		}
-		lt.delete(7);
-		lt.delete(8);
+		lt.remove(7);
+		lt.remove(8);
 
 		byte[] bytes = toBytes(lt);
 		LeapTable<Integer, String> copy = fromBytes(bytes);

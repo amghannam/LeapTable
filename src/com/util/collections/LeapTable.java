@@ -39,7 +39,7 @@ import java.util.function.IntUnaryOperator;
  * <p>
  * Marking tombstones has two core benefits:
  * <ul>
- * <li><strong>Deletes are O(1):</strong> no shifting or array copying.</li>
+ * <li><strong>Deletion is O(1):</strong> no shifting or array copying.</li>
  * <li><strong>Indices remain stable:</strong> the skip-index levels remain
  * valid because the positions of surviving entries never change.</li>
  * </ul>
@@ -83,7 +83,7 @@ import java.util.function.IntUnaryOperator;
  * This structure is especially useful for workloads with:
  * <ul>
  * <li>monotonic streams (timestamps, sequence numbers),</li>
- * <li>frequent queries and infrequent deletes,</li>
+ * <li>frequent queries and infrequent removals,</li>
  * <li>heavy range scanning,</li>
  * <li>a need for predictable, cache-friendly performance.</li>
  * </ul>
@@ -235,13 +235,18 @@ public final class LeapTable<K extends Comparable<? super K>, V> implements Iter
 	/**
 	 * Removes the mapping for the specified key from this table by placing a
 	 * tombstone at its index.
+	 * 
+	 * <p>
+	 * This is a logical deletion operation; no mappings are physically removed by
+	 * this method.
+	 * </p>
 	 *
 	 * @param key the key whose mapping is to be removed
 	 * @return the previous value associated with {@code key}, or {@code null} if
 	 *         there was no mapping or it was already deleted
 	 * @throws NullPointerException if {@code key} is {@code null}
 	 */
-	public V delete(K key) {
+	public V remove(K key) {
 		int idx = findExactIndex(key);
 		if (idx < 0 || tombstone.get(idx))
 			return null;
@@ -399,7 +404,7 @@ public final class LeapTable<K extends Comparable<? super K>, V> implements Iter
 	 * array and rebuilding the skip-index levels.
 	 *
 	 * <p>
-	 * The complexity of this operation is O(n).
+	 * This is an optional operation, with complexity O(n).
 	 * </p>
 	 */
 	public void compact() {

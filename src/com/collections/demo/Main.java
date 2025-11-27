@@ -30,9 +30,9 @@ public final class Main {
 		System.out.println("ceilEntry(7).value  = " + lt.ceilEntry(7).getValue());
 
 		// Delete a few entries
-		lt.delete(3);
-		lt.delete(4);
-		lt.delete(9);
+		lt.remove(3);
+		lt.remove(4);
+		lt.remove(9);
 
 		System.out.println("\nAfter deletions (logical tombstones):");
 		printAll(lt);
