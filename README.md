@@ -103,13 +103,13 @@ Add `LeapTable.java` to your project or package it as part of your module.
 ```java
 var lt = new LeapTable<Integer, String>();
 
-lt.putAppend(1, "A");
-lt.putAppend(2, "B");
-lt.putAppend(3, "C");
+lt.append(1, "A");
+lt.append(2, "B");
+lt.append(3, "C");
 
 System.out.println(lt.get(2));  // "B"
 
-lt.delete(2); // tombstone
+lt.remove(2); // tombstone
 System.out.println(lt.get(2));  // null
 
 lt.range(1, 10, (k, v) -> {
@@ -125,11 +125,11 @@ lt.compact(); // physically removes dead entries
 
 | Operation  | Complexity     | Notes                           |
 | ---------- | -------------- | ------------------------------- |
-| putAppend  | O(1) amortized | Monotone keys required          |
+| append  | O(1) amortized | Monotone keys required          |
 | get        | O(log n)       | Deterministic skip-index search |
 | floor/ceil | O(log n)       | Uses same skip-index            |
 | range      | O(log n + m)   | m = number of results           |
-| delete     | O(1)           | Tombstone mark                  |
+| remove     | O(1)           | Tombstone mark (logical delete) |
 | compact    | O(n)           | Rebuilds base + skip-index      |
 
 ---
