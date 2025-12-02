@@ -18,6 +18,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.IntConsumer;
 import java.util.function.IntUnaryOperator;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 /**
  * An ordered, append-optimized map backed by a contiguous array and a
@@ -93,7 +95,8 @@ import java.util.function.IntUnaryOperator;
  * @author Ahmed Ghannam
  * @version 1.0
  */
-public final class LeapTable<K extends Comparable<? super K>, V> implements Iterable<Map.Entry<K, V>>, Serializable {
+public final class LeapTable<K extends Comparable<? super K>, V> 
+							implements Iterable<Map.Entry<K, V>>, Serializable {
 
 	@Serial
 	private static final long serialVersionUID = 1L;
@@ -803,14 +806,8 @@ public final class LeapTable<K extends Comparable<? super K>, V> implements Iter
 	 */
 	@Override
 	public String toString() {
-		var sb = new StringBuilder("LeapTable{");
-		boolean first = true;
-		for (var e : this) {
-			if (!first)
-				sb.append(", ");
-			sb.append(e.getKey()).append('=').append(e.getValue());
-			first = false;
-		}
-		return sb.append('}').toString();
+		return StreamSupport.stream(spliterator(), false)
+				.map(e -> e.getKey() + "=" + e.getValue())
+				.collect(Collectors.joining(", ", "LeapTable{", "}"));
 	}
 }

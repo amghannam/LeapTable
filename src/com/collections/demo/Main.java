@@ -59,6 +59,8 @@ public final class Main {
 
 		System.out.println("\nAfter further appends:");
 		printAll(lt);
+		
+		System.out.println("\nPrinted with toString: " + lt.toString());
 
 		System.out.println("\n=== Demo complete ===");
 	}
