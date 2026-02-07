@@ -258,6 +258,15 @@ public final class LeapTable<K extends Comparable<? super K>, V>
 	}
 
 	/**
+	 * Returns {@code true} if this table contains no non-deleted entries.
+	 *
+	 * @return {@code true} if this table has no live entries
+	 */
+	public boolean isEmpty() {
+		return sizeLive() == 0;
+	}
+
+	/**
 	 * Returns the number of non-deleted entries in this table. The computation runs
 	 * in O(n).
 	 *
@@ -278,15 +287,8 @@ public final class LeapTable<K extends Comparable<? super K>, V>
 	}
 
 	/**
-	 * Returns {@code true} if this table contains no non-deleted entries.
-	 *
-	 * @return {@code true} if this table has no live entries
+	 * Removes all mappings from this table and resets its internal state.
 	 */
-	public boolean isEmpty() {
-		return sizeLive() == 0;
-	}
-
-	/** Removes all mappings from this table and resets its internal state. */
 	public void clear() {
 		base.clear();
 		tombstone = new BitSet();
